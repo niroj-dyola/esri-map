@@ -3,16 +3,6 @@ import { loadModules } from "esri-loader";
 
 function Map() {
   const MapElement = useRef(null);
-  const generateContent = (f) => {
-    console.log("feature", f);
-    // if (f.properties) {
-    //   for (var key in f.properties) {
-    //     out.push(key + ": " + f.properties[key]);
-    //   }
-
-    //   l.bindPopup(out.join("<br />"));
-    // }
-  };
 
   useEffect(() => {
     let view;
@@ -64,12 +54,13 @@ function Map() {
         ],
       };
       const template = {
-        title: "Crime Information",
-        content: generateContent(),
+        title: "{offense_category} ",
+        content: "{address}",
       };
+
       const geojsonlayer = new GeoJSONLayer({
         url: "https://raw.githubusercontent.com/adarshvarma15/mygeojson/main/RMS_Crime_Incidents%20edited.geojson",
-        rendered: render,
+        renderer: render,
         popupTemplate: template,
       });
       webmap.add(geojsonlayer);
