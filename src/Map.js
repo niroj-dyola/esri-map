@@ -18,19 +18,48 @@ function Map() {
       });
       view = new MapView({
         map: webmap,
-        center: [-83, 42],
-        zoom: 8,
+        center: [-83.159777091528696, 42.235723],
+        zoom: 12,
+        // ui: {
+        //   padding: {
+        //     bottom: 15,
+        //     right: 0,
+        //   },
+        // },
+
         container: MapElement.current,
       });
+
       const render = {
+        /** Simple Marker */
+        // type: "simple",
+        // field: "arrest_charge",
+        // symbol: {
+        //   type: "simple-marker",
+        //   color: "orange",
+        //   outline: {
+        //     color: "white",
+        //   },
+        // },
+
+        /** Picture Marker */
+        // type: "simple",
+        // field: "arrest_charge",
+        // symbol: {
+        //   type: "picture-marker", // autocasts as new PictureMarkerSymbol()
+        //   url: "https://static.arcgis.com/images/Symbols/Shapes/BlackStarLargeB.png",
+        //   width: "16px",
+        //   height: "16px",
+        // },
+
+        /** web style with hexagon */
         type: "simple",
         field: "arrest_charge",
+        size: 1000,
         symbol: {
-          type: "simple-marker",
-          color: "orange",
-          outline: {
-            color: "white",
-          },
+          type: "web-style",
+          name: "hexagon-3",
+          styleName: "Esri2DPointSymbolsStyle",
         },
         visualVariables: [
           {
@@ -53,9 +82,36 @@ function Map() {
           },
         ],
       };
+
       const template = {
         title: "{offense_category} ",
-        content: "{address}",
+        content: [
+          {
+            type: "fields",
+            fieldInfos: [
+              {
+                fieldName: "offense_category",
+                label: "Offense Category",
+                visible: true,
+              },
+              {
+                fieldName: "address",
+                label: "Address",
+                visible: true,
+              },
+              {
+                fieldName: "state_offense_code",
+                label: "Code",
+                visible: true,
+              },
+              {
+                fieldName: "arrest_charge",
+                label: "Charge",
+                visible: true,
+              },
+            ],
+          },
+        ],
       };
 
       const geojsonlayer = new GeoJSONLayer({
@@ -72,7 +128,11 @@ function Map() {
       }
     };
   });
-  return <div style={{ height: 800 }} ref={MapElement}></div>;
+  return (
+    <>
+      <div style={{ height: 800 }} ref={MapElement}></div>
+    </>
+  );
 }
 
 export default Map;
